@@ -75,7 +75,7 @@ const createTask = async function (task) {
 
 const updateTask = async function (id, task) {
     return await api
-        .put("/task/update" + id, JSON.stringify(task), {
+        .put("/task/update/" + id, JSON.stringify(task), {
             headers: {
                 "Content-Type": "application/json",
             },

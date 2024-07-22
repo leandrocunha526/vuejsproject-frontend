@@ -65,7 +65,7 @@ export default {
                 minute: '2-digit',
                 timeZone: 'America/Sao_Paulo', // Ajuste o fuso horário conforme necessário
             };
-            return new Date(date).toLocaleDateString('pt-BR', options).replace(',', '');
+            return new Date(date).toLocaleDateString('pt-BR', options);
         },
         goToTaskDetail(taskId) {
             this.$router.push({ name: 'TaskDetailView', params: { id: taskId } });

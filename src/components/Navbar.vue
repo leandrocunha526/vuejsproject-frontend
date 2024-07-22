@@ -19,6 +19,10 @@
                     class="block px-2 py-1 mt-1 font-semibold text-white no-underline rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">
                     <router-link class="no-underline text-white" to="/">Home</router-link>
                 </a>
+                <a
+                    class="block px-2 py-1 mt-1 font-semibold text-white no-underline rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">
+                    <router-link class="no-underline text-white" to="/kanban">Kanban</router-link>
+                </a>
                 <a href="/" @click="logout()"
                     class="block px-2 py-1 mt-1 font-semibold text-white no-underline rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">Logout</a>
             </nav>

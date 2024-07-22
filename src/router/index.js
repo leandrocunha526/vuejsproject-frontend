@@ -4,6 +4,7 @@ import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import SignUpView from "../views/SignUpView.vue";
 import TaskDetailView from "../views/TaskDetailView.vue";
+import KanbanView from "../views/KanbanView.vue";
 
 const routes = [
     {
@@ -28,6 +29,13 @@ const routes = [
         path: "/task/:id",
         name: "TaskDetailView",
         component: TaskDetailView,
+        meta: { requiredAuth: true },
+        props: true,
+    },
+    {
+        path: "/kanban",
+        name: "KanbanView",
+        component: KanbanView,
         meta: { requiredAuth: true },
     },
 ];

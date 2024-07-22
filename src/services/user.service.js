@@ -102,9 +102,9 @@ const deleteTask = async function (task_id) {
         });
 };
 
-const listTaskById = async function (id, task) {
+const listTaskById = async function (id) {
     return await api
-        .post("/task/list/" + id, JSON.stringify(task), {
+        .get("/task/list/" + id, {
             headers: {
                 "Content-Type": "application/json",
             },

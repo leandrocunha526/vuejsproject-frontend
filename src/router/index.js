@@ -3,6 +3,7 @@ import store from "./../store";
 import LoginView from "../views/LoginView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import SignUpView from "../views/SignUpView.vue";
+import TaskDetailView from "../views/TaskDetailView.vue";
 
 const routes = [
     {
@@ -23,6 +24,12 @@ const routes = [
         component: SignUpView,
         meta: { requiredAuth: false },
     },
+    {
+        path: "/task/:id",
+        name: "TaskDetailView",
+        component: TaskDetailView,
+        meta: { requiredAuth: true },
+    },
 ];
 
 const router = createRouter({
@@ -35,7 +42,6 @@ router.beforeEach(async (to, from, next) => {
         const isLoggedIn =
             store.getters["user/isLoggedIn"].success ||
             localStorage.getItem("isLoggedIn");
-
         const userIdExisted =
             store.getters["user/userProfile"].userId != -1 ||
             localStorage.getItem("userProfile")

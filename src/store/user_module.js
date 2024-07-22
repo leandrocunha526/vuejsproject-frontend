@@ -14,6 +14,7 @@ const state = () => ({
         username: "",
     },
     tasks: [],
+    taskDetail: {}, // Adicionando uma nova propriedade para armazenar uma tarefa específica
 });
 const getters = {
     isRegistered(state) {
@@ -27,6 +28,9 @@ const getters = {
     },
     tasks(state) {
         return state.tasks;
+    },
+    taskDetail(state) {
+        return state.taskDetail; // Getter para obter a tarefa específica
     },
 };
 const actions = {
@@ -45,14 +49,14 @@ const actions = {
     },
     async getTasks({ commit }) {
         const res = await userService.getTasks();
-        console.log("Res: ", res);
+        console.log("List all tasks response: ", res);
         if (res.success) {
-            commit('getTaskSuccess', res.tasks);
+            commit("getTaskSuccess", res.tasks);
             return res.tasks;
         } else {
-            commit('getTaskFailure');
+            commit("getTaskFailure");
             console.log("Get task failed");
-            return null
+            return null;
         }
     },
     async login({ commit }, user) {
@@ -110,12 +114,27 @@ const actions = {
         if (update_task_info[4] !== "") {
             update_task["status"] = update_task_info[4];
         }
+        if (update_task_info[5] !== "") {
+            update_task["duedate"] = update_task_info[5];
+        }
         const res = await userService.updateTask(task_id, update_task);
         if (res.success) {
             commit("updateTaskSuccess", [task_view_idx, update_task]);
             return true;
         } else {
             return false;
+        }
+    },
+    async getTaskById({ commit }, task_id) {
+        const res = await userService.listTaskById(task_id);
+        console.log("Detail task response: ", res.task);
+        if (res.success) {
+            commit("getTaskByIdSuccess", res.task);
+            return res;
+        } else {
+            commit("getTaskByIdFailure");
+            console.log("Get task failed");
+            return null;
         }
     },
 };
@@ -159,6 +178,12 @@ const mutations = {
         const task_view_idx = update_task_info[0];
         const update_task = update_task_info[1];
         state.tasks[task_view_idx] = update_task;
+    },
+    getTaskByIdSuccess(state, taskDetail) {
+        state.taskDetail = taskDetail; // Atualiza o estado com a tarefa específica
+    },
+    getTaskByIdFailure(state) {
+        state.taskDetail = {}; // Reseta a tarefa específica em caso de falha
     },
 };
 export default {

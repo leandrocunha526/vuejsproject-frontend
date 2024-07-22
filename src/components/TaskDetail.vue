@@ -26,7 +26,7 @@
             <p class="text-sm text-gray-500 mb-4">Atualizado em: <span class="font-medium text-gray-700">{{
                 formatDate(taskDetail.updatedAt) }}</span></p>
             <button @click="goBack"
-                class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                 Voltar
             </button>
         </div>

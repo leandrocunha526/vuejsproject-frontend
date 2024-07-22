@@ -95,7 +95,7 @@
                             class="block w-full px-4 py-3 mb-3 text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                     <button type="submit"
-                        class="px-6 py-2 font-bold text-white bg-blue-800 rounded hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="px-6 py-2 font-bold text-white bg-blue-800 rounded hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Salvar
                     </button>
                     <button type="button" @click="isOpen = false"
@@ -198,7 +198,7 @@
                             class="block w-full px-4 py-3 mb-3 text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                     <button type="submit"
-                        class="px-6 py-2 font-bold text-white bg-blue-800 rounded hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="px-6 py-2 font-bold text-white bg-blue-800 rounded hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Salvar
                     </button>
                     <button @click="isEditOpen = false" type="button"

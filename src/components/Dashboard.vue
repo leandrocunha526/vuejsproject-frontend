@@ -192,9 +192,9 @@
                         </select>
                     </div>
                     <div class="mb-6">
-                        <label for="duedate" class="block mb-2 text-sm font-bold text-gray-700">Data de
+                        <label for="editDueDate" class="block mb-2 text-sm font-bold text-gray-700">Data de
                             vencimento</label>
-                        <input id="duedate" required v-model="task.duedate" type="datetime-local"
+                        <input id="editDueDate" required v-model="editTask.duedate" type="datetime-local"
                             class="block w-full px-4 py-3 mb-3 text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
                     </div>
                     <button type="submit"
@@ -212,6 +212,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { format } from "date-fns";
 
 export default {
     name: "DashboardComponent",
@@ -301,7 +302,7 @@ export default {
             }
         },
         openEditModal(task, taskIndex) {
-            this.editTask = { ...task, index: taskIndex };
+            this.editTask = { ...task, index: taskIndex, duedate: task.duedate ? format(new Date(task.duedate), "yyyy-MM-dd'T'HH:mm") : '' };
             this.isEditOpen = true;
         },
         async updateTask(e) {

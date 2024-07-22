@@ -10,7 +10,9 @@
 
         <!-- Content -->
         <img src="./../assets/todo.png" alt="todo" class="h-40 w-60 mb-4" />
-        <p class="text-lg font-semibold">Seja bem-vindo ao seu dashboard {{ userProfile.username }}!</p>
+        <p class="text-lg font-semibold">
+            Seja bem-vindo ao seu dashboard {{ userProfile.username }}!
+        </p>
         <p class="text-md mb-4">O que deseja fazer hoje?</p>
 
         <!-- Search Input -->
@@ -114,10 +116,14 @@
                     <div class="px-8 py-4 bg-white">
                         <h1 class="mb-2 text-xl font-bold">{{ task.title }}</h1>
                         <p class="text-base mb-3">
-                            Estado: <span :class="{
-                                'bg-red-200 text-red-800': task.status === 'Pendente',
-                                'bg-yellow-200 text-yellow-800': task.status === 'Em andamento',
-                                'bg-green-200 text-green-800': task.status === 'Concluído',
+                            Estado:
+                            <span :class="{
+                                'bg-red-200 text-red-800':
+                                    task.status === 'Pendente',
+                                'bg-yellow-200 text-yellow-800':
+                                    task.status === 'Em andamento',
+                                'bg-green-200 text-green-800':
+                                    task.status === 'Concluído',
                             }" class="px-2 py-1 rounded-xl">{{ task.status }}</span>
                         </p>
                         <div class="space-x-2">
@@ -137,7 +143,10 @@
                     </div>
                 </div>
                 <div v-if="filterTasks.length === 0">
-                    <h3 class="text-lg font-bold">Não há tarefas cadastradas, você está livre como um pássaro!</h3>
+                    <h3 class="text-lg font-bold">
+                        Não há tarefas cadastradas, você está livre como um
+                        pássaro!
+                    </h3>
                 </div>
             </div>
         </div>
@@ -150,9 +159,13 @@
                 <p>Tem certeza que deseja excluir esta tarefa?</p>
                 <div class="flex justify-end mt-4">
                     <button @click="confirmDeleteTask"
-                        class="px-4 py-2 mr-2 bg-red-600 text-white rounded hover:bg-red-700">Sim</button>
+                        class="px-4 py-2 mr-2 bg-red-600 text-white rounded hover:bg-red-700">
+                        Sim
+                    </button>
                     <button @click="showDeleteConfirmModal = false"
-                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Não</button>
+                        class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+                        Não
+                    </button>
                 </div>
             </div>
         </div>
@@ -202,11 +215,12 @@
                         Salvar
                     </button>
                     <button @click="isEditOpen = false" type="button"
-                        class="px-6 py-2 text-red-800 border border-red-600 rounded ml-2">Cancelar</button>
+                        class="px-6 py-2 text-red-800 border border-red-600 rounded ml-2">
+                        Cancelar
+                    </button>
                 </form>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -224,21 +238,21 @@ export default {
             isOpen: false,
             isEditOpen: false,
             show: false,
-            loading: false,  // Add loading state
+            loading: false, // Add loading state
             message: "",
             errorMessage: "",
             task: {
                 title: "",
                 description: "",
                 status: "",
-                duedate: ""
+                duedate: "",
             },
             editTask: {
                 id: "",
                 title: "",
                 description: "",
                 status: "",
-                duedate: ""
+                duedate: "",
             },
             showDeleteConfirmModal: false,
             taskToDeleteId: null,
@@ -254,9 +268,14 @@ export default {
             _tasks: "tasks",
         }),
         filterTasks() {
-            return this.tasks.filter(task =>
-                task.title.toLowerCase().includes(this.search.toLowerCase()) ||
-                task.description.toLowerCase().includes(this.search.toLowerCase())
+            return this.tasks.filter(
+                (task) =>
+                    task.title
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase()) ||
+                    task.description
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase())
             );
         },
     },
@@ -271,7 +290,9 @@ export default {
             this.loading = true;
             try {
                 this.tasks = await this.getTasks();
-                this.userProfile = JSON.parse(localStorage.getItem("userProfile"));
+                this.userProfile = JSON.parse(
+                    localStorage.getItem("userProfile")
+                );
             } catch (error) {
                 this.errorMessage = "Erro ao carregar tarefas: " + error;
                 this.show = true;
@@ -302,7 +323,13 @@ export default {
             }
         },
         openEditModal(task, taskIndex) {
-            this.editTask = { ...task, index: taskIndex, duedate: task.duedate ? format(new Date(task.duedate), "yyyy-MM-dd'T'HH:mm") : '' };
+            this.editTask = {
+                ...task,
+                index: taskIndex,
+                duedate: task.duedate
+                    ? format(new Date(task.duedate), "yyyy-MM-dd'T'HH:mm")
+                    : "",
+            };
             this.isEditOpen = true;
         },
         async updateTask(e) {
@@ -312,10 +339,17 @@ export default {
                 title: this.editTask.title,
                 description: this.editTask.description,
                 status: this.editTask.status,
-                duedate: this.editTask.duedate
+                duedate: this.editTask.duedate,
             };
             try {
-                await this.updateTaskAction([this.editTask.id, this.editTask.index, updated_task.title, updated_task.description, updated_task.status, updated_task.duedate]);
+                await this.updateTaskAction([
+                    this.editTask.id,
+                    this.editTask.index,
+                    updated_task.title,
+                    updated_task.description,
+                    updated_task.status,
+                    updated_task.duedate,
+                ]);
                 this.message = "Atualizado com sucesso!";
                 this.show = true;
                 this.tasks = await this.getTasks();
@@ -336,7 +370,10 @@ export default {
         async confirmDeleteTask() {
             this.loading = true;
             try {
-                await this.deleteTask([this.taskToDeleteId, this.taskToDeleteIndex]);
+                await this.deleteTask([
+                    this.taskToDeleteId,
+                    this.taskToDeleteIndex,
+                ]);
                 this.message = "Deletado com sucesso!";
                 this.show = true;
                 this.tasks = await this.getTasks();

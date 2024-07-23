@@ -17,8 +17,12 @@
 
         <!-- Search Input -->
         <div class="mb-4">
-            <input type="search" v-model="search" placeholder="Pesquisar por título e descrição"
+            <input type="search" v-model="search" placeholder="Pesquisar por título e descrição ou selecione uma data abaixo"
                 class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+        </div>
+        <div class="mb-4 justify-center flex">
+            <input type="date" v-model="search" placeholder="Pesquisar por título e descrição"
+                class="block px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
         </div>
         <!-- Button to Open Modal -->
         <div class="mb-6 flex justify-center">
@@ -245,6 +249,12 @@ export default {
                         .includes(this.search.toLowerCase()) ||
                     task.description
                         .toLowerCase()
+                        .includes(this.search.toLowerCase()) ||
+                    task.createdAt
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase()) ||
+                    task.duedate
+                        .toLowerCase()
                         .includes(this.search.toLowerCase())
             );
         },
@@ -306,7 +316,7 @@ export default {
                 title: this.editTask.title,
                 description: this.editTask.description,
                 status: this.editTask.status,
-                duedate: this.editTask.duedate,
+                duedate: new Date(this.editTask.duedate).toISOString(),
             };
             try {
                 await this.updateTaskAction([

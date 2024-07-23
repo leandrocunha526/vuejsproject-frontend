@@ -12,6 +12,7 @@ This template should help get you started developing with Vue 3 in Vite.
 - **Kanban** page with todo, in progress and done tasks.  
 - Toasts for optimize notifications.  
 - Internationalization for dates formats.  
+- [Vuex](https://v3.vuex.vuejs.org/) for global state management, it serves as a centralized store for all the components in an application and with rules ensuring that the state can only be mutated in a predictable fashion.  
 
 ## Project Setup
 

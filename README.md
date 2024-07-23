@@ -11,6 +11,7 @@
 - Toasts for optimize notifications.  
 - Internationalization for dates formats.  
 - [Vuex](https://v3.vuex.vuejs.org/) for global state management, it serves as a centralized store for all the components in an application and with rules ensuring that the state can only be mutated in a predictable fashion.  
+- [Vue.js 3](https://vuejs.org) (Vue.js 2 is EOL).  
 
 ## Project Setup
 
@@ -38,4 +39,4 @@ npm run build
 
 - [Vite Configuration Reference](https://vitejs.dev/config/).
 - [@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue)
-- [VueJS Doc](https://vuejs.org/guide/introduction.html)
+- [Vue.js 3 Doc](https://vuejs.org/guide/introduction.html)

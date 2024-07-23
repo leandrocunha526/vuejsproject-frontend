@@ -2,8 +2,6 @@
 
 [![Build Vue application](https://github.com/leandrocunha526/vuejsproject-frontend/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/leandrocunha526/vuejsproject-frontend/actions/workflows/continuous-integration.yml)
 
-This template should help get you started developing with Vue 3 in Vite.
-
 ## About
 
 - A full stack task manager web application with relational database (PostgreSQL) and authentication by user.  

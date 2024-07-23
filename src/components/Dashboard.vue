@@ -20,35 +20,6 @@
             <input type="search" v-model="search" placeholder="Pesquisar por título e descrição"
                 class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
         </div>
-
-        <!-- Success Message -->
-        <div v-if="message" v-show="show"
-            class="relative px-4 py-3 mb-4 text-green-700 bg-green-100 border border-green-400 rounded">
-            <span class="block sm:inline">{{ message }}</span>
-            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                <svg class="w-6 h-6 text-red-500 fill-current cursor-pointer" role="button"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" @click="show = false">
-                    <title>Fechar</title>
-                    <path
-                        d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                </svg>
-            </span>
-        </div>
-
-        <!-- Error Message -->
-        <div v-if="errorMessage" v-show="show"
-            class="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
-            <span class="block sm:inline">{{ errorMessage }}</span>
-            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                <svg class="w-6 h-6 text-red-500 fill-current cursor-pointer" role="button"
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" @click="show = false">
-                    <title>Fechar</title>
-                    <path
-                        d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                </svg>
-            </span>
-        </div>
-
         <!-- Button to Open Modal -->
         <div class="mb-6 flex justify-center">
             <button @click="isOpen = true"
@@ -227,6 +198,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { format } from "date-fns";
+import { toast } from "vue3-toastify";
 
 export default {
     name: "DashboardComponent",
@@ -239,8 +211,6 @@ export default {
             isEditOpen: false,
             show: false,
             loading: false, // Add loading state
-            message: "",
-            errorMessage: "",
             task: {
                 title: "",
                 description: "",
@@ -294,8 +264,7 @@ export default {
                     localStorage.getItem("userProfile")
                 );
             } catch (error) {
-                this.errorMessage = "Erro ao carregar tarefas: " + error;
-                this.show = true;
+                toast.error("Ocorreu um erro ao obter tarefas: " + error);
             } finally {
                 this.loading = false;
             }
@@ -311,12 +280,10 @@ export default {
             };
             try {
                 await this.createTask(new_task);
-                this.message = "Salvo com sucesso!";
-                this.show = true;
+                toast.success("Tarefa salva com sucesso!");
                 this.tasks = await this.getTasks();
             } catch (error) {
-                this.errorMessage = "Erro ao salvar a tarefa: " + error;
-                this.show = true;
+                toast.error("Ocorreu um erro ao salvar tarefa: " + error);
             } finally {
                 this.loading = false;
                 this.isOpen = false;
@@ -350,13 +317,11 @@ export default {
                     updated_task.status,
                     updated_task.duedate,
                 ]);
-                this.message = "Atualizado com sucesso!";
-                this.show = true;
+                toast.success("Tarefa atualizada com sucesso!");
                 this.tasks = await this.getTasks();
                 this.loading = true;
             } catch (error) {
-                this.errorMessage = "Erro ao atualizar a tarefa: " + error;
-                this.show = true;
+                toast.error("Ocorreu um erro ao atualizar tarefa: " + error);
             } finally {
                 this.loading = false;
                 this.isEditOpen = false;
@@ -374,12 +339,10 @@ export default {
                     this.taskToDeleteId,
                     this.taskToDeleteIndex,
                 ]);
-                this.message = "Deletado com sucesso!";
-                this.show = true;
+                toast.success("Tarefa excluída com sucesso!");
                 this.tasks = await this.getTasks();
             } catch (error) {
-                this.errorMessage = "Erro ao excluir a tarefa: " + error;
-                this.show = true;
+                toast.error("Ocorreu um erro ao excluir tarefa: " + error);
             } finally {
                 this.loading = false;
                 this.showDeleteConfirmModal = false;

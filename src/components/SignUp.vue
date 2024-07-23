@@ -37,11 +37,13 @@
                 </div>
 
                 <div class="mb-6 confirme_password-input">
-                    <label for="confirme_password" class="block mb-2 text-sm font-bold text-gray-700">Confirme sua senha</label>
+                    <label for="confirme_password" class="block mb-2 text-sm font-bold text-gray-700">Confirme sua
+                        senha</label>
 
                     <input v-model="user.confirme_password"
                         class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border rounded appearance-none focus:bg-white focus:shadow-outline"
-                        id="confirme_password" type="password" placeholder="Digite sua senha novamente para confirmar" />
+                        id="confirme_password" type="password"
+                        placeholder="Digite sua senha novamente para confirmar" />
                     <p class="text-red-500" v-if="!!errors.confirme_password">
                         {{ errors.confirme_password }}
                     </p>
@@ -52,7 +54,8 @@
                         type="submit">
                         Enviar
                     </button>
-                    <router-link to="/" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+                    <router-link to="/"
+                        class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
                         Retornar para a página de login
                     </router-link>
                 </div>
@@ -89,7 +92,7 @@ export default {
         };
     },
     beforeMount() {
-            this.initRegister()
+        this.initRegister();
     },
     methods: {
         ...mapActions("user", {
@@ -97,28 +100,28 @@ export default {
             initRegister: "registerReset",
         }),
         onSubmit() {
-            this.registerErrorMessages = [];
-            let isPassFrontendValidate = true;
+            this.user.registerErrorMessages = [];
+            this.errors = { username: "", password: "", confirme_password: "" }; // Clear errors
+
             const data = {
                 username: this.user.username,
                 password: this.user.password,
             };
+
             schema
                 .validate(this.user, { abortEarly: false })
                 .then(async () => {
-                    if(this.user.username.length <= 3 || this.user.password.length <= 3 || this.user.confirme_password.length <= 3){
-                       this.userregisterErrorMessages.push("Usuário ou senha deve ser maior que 3 caracteres")
-                        isPassFrontendValidate = false;
-                    }
-                    if(this.user.password != this.user.confirme_password){
+                    if (this.user.username.length <= 3 || this.user.password.length <= 3 || this.user.confirme_password.length <= 3) {
+                        this.user.registerErrorMessages.push("Usuário ou senha deve ser maior que 3 caracteres");
+                    } else if (this.user.password !== this.user.confirme_password) {
                         this.user.registerErrorMessages.push("As senhas são diferentes");
-                    }
-                    else if(isPassFrontendValidate){
+                    } else {
                         const registerResult = await this.register(data);
-                        if(registerResult.success){
-                            this.$router.push("/");
-                        }
-                        else{
+                        if (registerResult.success) {
+                            this.resetForm();  // Clear the form on success
+                            this.$router.push("/"); // Navigate to the login page
+                        } else {
+                            this.resetForm();  // Clear the form on error
                             this.user.registerErrorMessages.push("Ocorreu um erro ao cadastrar o usuário. Error: " + registerResult.message);
                         }
                     }
@@ -132,13 +135,12 @@ export default {
                     });
                 });
         },
-        validate(field) {
-            schema
-                .validateAt(field, this.user)
-                .then(() => (this.errors[field] = ""))
-                .catch((error) => {
-                    this.errors[error.path] = error.message;
-                });
+        resetForm() {
+            this.user.username = "";
+            this.user.password = "";
+            this.user.confirme_password = "";
+            this.errors = { username: "", password: "", confirme_password: "" };
+            this.user.registerErrorMessages = []; // Clear any existing error messages
         },
     },
 };

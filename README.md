@@ -6,7 +6,7 @@ This template should help get you started developing with Vue 3 in Vite.
 
 ## About
 
-- A task manager web application with relational database and authentication by user.  
+- A full stack task manager web application with relational database (PostgreSQL) and authentication by user.  
 - All tasks of a user are restricted to other users.  
 - Respecting confidentiality.  
 - **Kanban** page with todo, in progress and done tasks.  
@@ -31,9 +31,11 @@ npm run dev
 npm run build
 ```
 
-## Docs
+## API
 
-## Customize configuration
+[API/back-end](https://github.com/leandrocunha526/vueproject-backend)
+
+## Docs
 
 - [Vite Configuration Reference](https://vitejs.dev/config/).
 - [@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue)

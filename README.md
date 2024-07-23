@@ -1,16 +1,17 @@
-# vue-project
+# VUE project - Tasks
 
 [![Build Vue application](https://github.com/leandrocunha526/vuejsproject-frontend/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/leandrocunha526/vuejsproject-frontend/actions/workflows/continuous-integration.yml)
 
 This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+## About
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- A task manager web application with relational database and authentication by user.  
+- All tasks of a user are restricted to other users.  
+- Respecting confidentiality.  
+- **Kanban** page with todo, in progress and done tasks.  
+- Toasts for optimize notifications.  
+- Internationalization for dates formats.  
 
 ## Project Setup
 
@@ -29,3 +30,11 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## Docs
+
+## Customize configuration
+
+- [Vite Configuration Reference](https://vitejs.dev/config/).
+- [@vitejs/plugin-vue](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue)
+- [VueJS Doc](https://vuejs.org/guide/introduction.html)

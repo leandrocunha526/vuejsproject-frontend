@@ -16,14 +16,27 @@
         <p class="text-md mb-4">O que deseja fazer hoje?</p>
 
         <!-- Search Input -->
+        <!-- Filter by Status -->
         <div class="mb-4">
+            <label for="status" class="block mb-2 text-sm font-bold text-gray-700">Filtrar por estado</label>
+            <select v-model="filterStatus"
+                class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <option value="">Todos</option>
+                <option value="Pendente">Pendente</option>
+                <option value="Em andamento">Em andamento</option>
+                <option value="Concluído">Concluído</option>
+            </select>
+
+            <label for="search" class="block mb-2 text-sm font-bold text-gray-700">Pesquisar por título e
+                descrição</label>
             <input type="search" v-model="search"
                 placeholder="Pesquisar por título e descrição ou selecione uma data abaixo"
                 class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
-        </div>
-        <div class="mb-4 justify-center flex">
-            <input type="date" v-model="search" placeholder="Pesquisar por título e descrição"
-                class="block px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+            <label for="date" class="block mb-2 text-sm font-bold text-gray-700">Pesquisar por data</label>
+            <div class="mb-4 justify-center flex">
+                <input type="date" v-model="search" placeholder="Pesquisar por título e descrição"
+                    class="block px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+            </div>
         </div>
         <!-- Button to Open Modal -->
         <div class="mb-6 flex justify-center">
@@ -229,6 +242,7 @@ export default {
             userProfile: {},
             tasks: [],
             search: "",
+            filterStatus: "",
             isOpen: false,
             isEditOpen: false,
             show: false,
@@ -262,21 +276,16 @@ export default {
             _tasks: "tasks",
         }),
         filterTasks() {
-            return this.tasks.filter(
-                (task) =>
-                    task.title
-                        .toLowerCase()
-                        .includes(this.search.toLowerCase()) ||
-                    task.description
-                        .toLowerCase()
-                        .includes(this.search.toLowerCase()) ||
-                    task.createdAt
-                        .toLowerCase()
-                        .includes(this.search.toLowerCase()) ||
-                    task.duedate
-                        .toLowerCase()
-                        .includes(this.search.toLowerCase())
-            );
+            return this.tasks.filter(task => {
+                const matchesSearch = task.title.toLowerCase().includes(this.search.toLowerCase()) ||
+                    task.description.toLowerCase().includes(this.search.toLowerCase()) ||
+                    task.createdAt.toLowerCase().includes(this.search.toLowerCase()) ||
+                    task.duedate.toLowerCase().includes(this.search.toLowerCase());
+
+                const matchesStatus = this.filterStatus === "" || task.status === this.filterStatus;
+
+                return matchesSearch && matchesStatus;
+            });
         },
         paginatedTasks() {
             const start = (this.currentPage - 1) * this.tasksPerPage;

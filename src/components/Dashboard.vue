@@ -17,7 +17,8 @@
 
         <!-- Search Input -->
         <div class="mb-4">
-            <input type="search" v-model="search" placeholder="Pesquisar por título e descrição ou selecione uma data abaixo"
+            <input type="search" v-model="search"
+                placeholder="Pesquisar por título e descrição ou selecione uma data abaixo"
                 class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
         </div>
         <div class="mb-4 justify-center flex">
@@ -86,7 +87,7 @@
         <!-- Task Cards -->
         <div class="flex items-center justify-center py-5">
             <div class="w-full max-w-fit">
-                <div v-for="(task, task_view_idx) in filterTasks" :key="task.id"
+                <div v-for="(task, task_view_idx) in paginatedTasks" :key="task.id"
                     class="max-w-lg overflow-hidden rounded shadow-lg mb-4">
                     <div class="px-8 py-4 bg-white">
                         <h1 class="mb-2 text-xl font-bold">{{ task.title }}</h1>
@@ -123,8 +124,25 @@
                         pássaro!
                     </h3>
                 </div>
+                <!-- Pagination Controls -->
+                <div class="flex justify-center mt-4">
+                    <button @click="prevPage" :disabled="currentPage === 1"
+                        class="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400">
+                        Anterior
+                    </button>
+                    <button v-for="page in totalPages" @click="goToPage(page)" :key="page"
+                        :class="{ 'bg-blue-600 text-white': currentPage === page, 'bg-gray-300': currentPage !== page }"
+                        class="px-4 py-2 mx-1 rounded hover:bg-gray-400">
+                        {{ page }}
+                    </button>
+                    <button @click="nextPage" :disabled="currentPage === totalPages"
+                        class="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400">
+                        Próxima
+                    </button>
+                </div>
             </div>
         </div>
+
 
         <!-- Delete Confirmation Modal -->
         <div v-if="showDeleteConfirmModal"
@@ -231,6 +249,8 @@ export default {
             showDeleteConfirmModal: false,
             taskToDeleteId: null,
             taskToDeleteIndex: null,
+            currentPage: 1,
+            tasksPerPage: 10,
         };
     },
     created() {
@@ -257,6 +277,14 @@ export default {
                         .toLowerCase()
                         .includes(this.search.toLowerCase())
             );
+        },
+        paginatedTasks() {
+            const start = (this.currentPage - 1) * this.tasksPerPage;
+            const end = start + this.tasksPerPage;
+            return this.filterTasks.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.filterTasks.length / this.tasksPerPage);
         },
     },
     methods: {
@@ -357,6 +385,19 @@ export default {
                 this.loading = false;
                 this.showDeleteConfirmModal = false;
             }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage++;
+            }
+        },
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        goToPage(pageNumber) {
+            this.currentPage = pageNumber;
         },
     },
 };

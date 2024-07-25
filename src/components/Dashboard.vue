@@ -13,9 +13,21 @@
         <p class="text-lg font-semibold">
             Seja bem-vindo ao seu dashboard {{ userProfile.username }}!
         </p>
-        <p class="text-md mb-4">O que deseja fazer hoje?</p>
+        <div class="flex items-center space-x-2 mb-2">
+            <p class="text-base">
+                O que deseja fazer hoje?
+            </p>
+            <p class="text-base" v-if="filterTasks.length === 1">
+                Você possui {{ filterTasks.length }} tarefa cadastrada!
+            </p>
+            <p class="text-base" v-else-if="filterTasks.length > 1">
+                Você possui {{ filterTasks.length }} tarefas cadastradas!
+            </p>
+            <p class="text-base" v-else>
+                Você não possui tarefas cadastradas! Que tal começar agora?
+            </p>
+        </div>
 
-        <!-- Search Input -->
         <!-- Filter by Status -->
         <div class="mb-4">
             <label for="status" class="block mb-2 text-sm font-bold text-gray-700">Filtrar por estado</label>
@@ -27,6 +39,7 @@
                 <option value="Concluído">Concluído</option>
             </select>
 
+            <!-- Search Input -->
             <label for="search" class="block mb-2 text-sm font-bold text-gray-700">Pesquisar por título e
                 descrição</label>
             <input type="search" v-model="search"
@@ -38,6 +51,7 @@
                     class="block px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
             </div>
         </div>
+
         <!-- Button to Open Modal -->
         <div class="mb-6 flex justify-center">
             <button @click="isOpen = true"

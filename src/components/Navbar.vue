@@ -15,15 +15,13 @@
                 </div>
             </div>
             <nav :class="isOpen ? 'block' : 'hidden'" class="px-2 pt-2 pb-4 sm:flex sm:p-0">
-                <a
-                    class="block px-2 py-1 mt-1 font-semibold text-white no-underline rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">
-                    <router-link class="no-underline text-white" to="/">Home</router-link>
-                </a>
-                <a
-                    class="block px-2 py-1 mt-1 font-semibold text-white no-underline rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">
-                    <router-link class="no-underline text-white" to="/kanban">Kanban</router-link>
-                </a>
-                <a href="/" @click="logout()"
+                <router-link to="/"
+                    class="block px-2 py-1 mt-1 font-semibold text-white no-underline rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">Home</router-link>
+                <router-link to="/kanban"
+                    class="block px-2 py-1 mt-1 font-semibold text-white no-underline rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">Kanban</router-link>
+                <a @click.prevent="goToProfile"
+                    class="block px-2 py-1 mt-1 font-semibold text-white no-underline rounded hover:bg-gray-800 sm:mt-0 sm:ml-2 cursor-pointer">Profile</a>
+                <a href="/" @click="logout"
                     class="block px-2 py-1 mt-1 font-semibold text-white no-underline rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">Logout</a>
             </nav>
         </header>
@@ -42,9 +40,18 @@ export default {
         logout() {
             localStorage.removeItem("isLoggedIn");
             localStorage.removeItem("userProfile");
+            this.$router.push('/login');
         },
+        goToProfile() {
+            const userProfile = JSON.parse(localStorage.getItem('userProfile'))
+            const userId = userProfile?.id;
+
+            if (userId) {
+                this.$router.push({ name: 'ProfileView', params: { id: userId } });
+            } else {
+                console.error('User ID not found');
+            }
+        }
     },
 }
 </script>
-
-<style></style>

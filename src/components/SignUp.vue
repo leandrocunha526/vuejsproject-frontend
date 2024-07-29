@@ -111,8 +111,8 @@ export default {
             schema
                 .validate(this.user, { abortEarly: false })
                 .then(async () => {
-                    if (this.user.username.length <= 3 || this.user.password.length <= 3 || this.user.confirme_password.length <= 3) {
-                        this.user.registerErrorMessages.push("Usuário ou senha deve ser maior que 3 caracteres");
+                    if (this.user.username.length <= 5 || this.user.password.length <= 5 || this.user.confirme_password.length <= 5) {
+                        this.user.registerErrorMessages.push("Usuário ou senha deve ser maior que 6 caracteres");
                     } else if (this.user.password !== this.user.confirme_password) {
                         this.user.registerErrorMessages.push("As senhas são diferentes");
                     } else {

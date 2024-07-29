@@ -2,7 +2,7 @@ import api from "./api";
 
 const register = async function (user) {
     return await api
-        .post("/user/register", JSON.stringify(user), {
+        .post("/user/register", user, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -34,6 +34,57 @@ const login = async function (user) {
 const getUserProfile = async function () {
     return await api
         .get("/user/profile", {
+            withCredentials: true,
+        })
+        .then((res) => {
+            return res.data;
+        })
+        .catch((error) => {
+            return error.response.data;
+        });
+};
+
+const getUserDetail = async function (id) {
+    return await api
+        .get(`/user/detail/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            withCredentials: true,
+        })
+        .then((res) => {
+            return res.data.user;
+        })
+        .catch((error) => {
+            console.error(
+                "Erro ao obter detalhes do usuário:",
+                error.response || error
+            );
+            return error.response
+                ? error.response.data
+                : { error: "Erro desconhecido" };
+        });
+};
+
+const updateUser = async function (id, user) {
+    return await api
+        .put("/user/update/" + id, user, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            withCredentials: true,
+        })
+        .then((res) => {
+            return res.data.user;
+        })
+        .catch((error) => {
+            return error.response.error;
+        });
+};
+
+const deleteUser = async function (user_id) {
+    return await api
+        .delete("/user/delete/" + user_id, {
             withCredentials: true,
         })
         .then((res) => {
@@ -127,4 +178,7 @@ export const userService = {
     updateTask,
     deleteTask,
     listTaskById,
+    updateUser,
+    deleteUser,
+    getUserDetail,
 };

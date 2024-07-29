@@ -5,6 +5,7 @@ import DashboardView from "../views/DashboardView.vue";
 import SignUpView from "../views/SignUpView.vue";
 import TaskDetailView from "../views/TaskDetailView.vue";
 import KanbanView from "../views/KanbanView.vue";
+import ProfileView from "../views/ProfileView.vue";
 
 const routes = [
     {
@@ -36,6 +37,12 @@ const routes = [
         path: "/kanban",
         name: "KanbanView",
         component: KanbanView,
+        meta: { requiredAuth: true },
+    },
+    {
+        path: "/profile/:id",
+        name: "ProfileView",
+        component: ProfileView,
         meta: { requiredAuth: true },
     },
 ];

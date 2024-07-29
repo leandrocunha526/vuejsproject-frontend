@@ -14,8 +14,9 @@ const state = () => ({
         username: "",
     },
     tasks: [],
-    taskDetail: {}, // Adicionando uma nova propriedade para armazenar uma tarefa específica
+    taskDetail: {},
 });
+
 const getters = {
     isRegistered(state) {
         return state.registered;
@@ -30,9 +31,10 @@ const getters = {
         return state.tasks;
     },
     taskDetail(state) {
-        return state.taskDetail; // Getter para obter a tarefa específica
+        return state.taskDetail;
     },
 };
+
 const actions = {
     registerReset({ commit }) {
         commit("registerReset");
@@ -49,13 +51,11 @@ const actions = {
     },
     async getTasks({ commit }) {
         const res = await userService.getTasks();
-        console.log("List all tasks response: ", res);
         if (res.success) {
             commit("getTaskSuccess", res.tasks);
             return res.tasks;
         } else {
             commit("getTaskFailure");
-            console.log("Get task failed");
             return null;
         }
     },
@@ -127,17 +127,66 @@ const actions = {
     },
     async getTaskById({ commit }, task_id) {
         const res = await userService.listTaskById(task_id);
-        console.log("Detail task response: ", res.task);
         if (res.success) {
             commit("getTaskByIdSuccess", res.task);
             return res;
         } else {
             commit("getTaskByIdFailure");
-            console.log("Get task failed");
+            return null;
+        }
+    },
+    async getUserProfile({ commit }, user_id) {
+        const res = await userService.getUserDetail(user_id);
+        if (res && res.id) {
+            commit("setUserProfile", res);
+            return res;
+        } else {
+            commit("updateUserProfileFailure");
+            console.log("Get user profile failed");
+            return null;
+        }
+    },
+    async updateUserProfile({ commit }, user) {
+        try {
+            const res = await userService.updateUser(user.id, user);
+            if (res.success) {
+                commit("setUserProfile", res.data);
+                return res;
+            } else {
+                commit("updateUserProfileFailure", res.message);
+                return res;
+            }
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    },
+    async deleteUser({ commit, state }) {
+        const user_id = state.userProfile.id;
+        try {
+            const res = await userService.deleteUser(user_id);
+            if (res.success) {
+                commit("resetUserProfile");
+                localStorage.removeItem("isLoggedIn");
+                localStorage.removeItem("userProfile");
+                return res;
+            } else {
+                commit(
+                    "deleteUserFailure",
+                    "Falha ao excluir usuário. Tente novamente."
+                );
+                return null;
+            }
+        } catch (error) {
+            console.error(error);
+            commit(
+                "deleteUserFailure",
+                "Erro ao excluir usuário. Tente novamente mais tarde."
+            );
             return null;
         }
     },
 };
+
 const mutations = {
     registerSuccess(state) {
         state.registered.message = "Registered successfully";
@@ -152,17 +201,13 @@ const mutations = {
         state.registered.success = false;
     },
     loginSuccess(state, userProfile) {
-        state.loggedIn.message = "Register successfully";
+        state.loggedIn.message = "Login successfully";
         state.loggedIn.success = true;
         state.userProfile.id = userProfile.id;
         state.userProfile.username = userProfile.username;
     },
     loginFailure(state) {
-        state.loggedIn.message = "Register unsuccessfully";
-        state.loggedIn.success = false;
-    },
-    loginReset(state) {
-        state.loggedIn.message = "";
+        state.loggedIn.message = "Login failed";
         state.loggedIn.success = false;
     },
     getTaskSuccess(state, tasks) {
@@ -180,12 +225,31 @@ const mutations = {
         state.tasks[task_view_idx] = update_task;
     },
     getTaskByIdSuccess(state, taskDetail) {
-        state.taskDetail = taskDetail; // Atualiza o estado com a tarefa específica
+        state.taskDetail = taskDetail;
     },
     getTaskByIdFailure(state) {
-        state.taskDetail = {}; // Reseta a tarefa específica em caso de falha
+        state.taskDetail = {};
+    },
+    setUserProfile(state, userProfile) {
+        state.userProfile = userProfile;
+    },
+    deleteUserFailure(state, errorMessage) {
+        state.userProfile = errorMessage;
+    },
+    resetUserProfile(state) {
+        state.userProfile = {
+            id: "",
+            username: "",
+        };
+        state.loggedIn = {
+            message: "",
+            success: false,
+        };
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("userProfile");
     },
 };
+
 export default {
     namespaced: true,
     state,

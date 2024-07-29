@@ -9,23 +9,27 @@
         </div>
 
         <!-- Content -->
-        <img src="./../assets/todo.png" alt="todo" class="h-40 w-60 mb-4" />
-        <p class="text-lg font-semibold">
-            Seja bem-vindo ao seu dashboard {{ userProfile.username }}!
-        </p>
-        <div class="flex items-center space-x-2 mb-2">
-            <p class="text-base">
-                O que deseja fazer hoje?
-            </p>
-            <p class="text-base" v-if="filterTasks.length === 1">
-                Você possui {{ filterTasks.length }} tarefa cadastrada!
-            </p>
-            <p class="text-base" v-else-if="filterTasks.length > 1">
-                Você possui {{ filterTasks.length }} tarefas cadastradas!
-            </p>
-            <p class="text-base" v-else>
-                Você não possui tarefas cadastradas! Que tal começar agora?
-            </p>
+        <div class="flex items-center space-x-4">
+            <img src="./../assets/todo.png" alt="todo" class="h-40 w-60" />
+            <div class="flex flex-col">
+                <p class="text-lg font-semibold mb-2">
+                    Seja bem-vindo ao seu dashboard {{ userProfile.username }}!
+                </p>
+                <div class="flex space-x-2 mb-2">
+                    <p class="text-base">
+                        O que deseja fazer hoje?
+                    </p>
+                    <p class="text-base" v-if="filterTasks.length === 1">
+                        Você possui {{ filterTasks.length }} tarefa cadastrada!
+                    </p>
+                    <p class="text-base" v-else-if="filterTasks.length > 1">
+                        Você possui {{ filterTasks.length }} tarefas cadastradas!
+                    </p>
+                    <p class="text-base" v-else>
+                        Você não possui tarefas cadastradas! Que tal começar agora?
+                    </p>
+                </div>
+            </div>
         </div>
 
         <!-- Filter by Status -->
@@ -62,7 +66,7 @@
 
         <!-- Task Modal -->
         <div v-show="isOpen" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-40">
-            <div class="max-w-2xl p-6 bg-white rounded-md shadow-xl">
+            <div class="max-w-2xl max-h-2xl p-6 bg-white rounded-md shadow-xl">
                 <div class="flex items-center justify-between">
                     <h3 class="text-2xl">Cadastrar tarefa</h3>
                     <svg @click="isOpen = false" xmlns="http://www.w3.org/2000/svg"
@@ -103,6 +107,10 @@
                         class="px-6 py-2 font-bold text-white bg-blue-800 rounded hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Salvar
                     </button>
+                    <button type="reset"
+                        class="px-6 py-2 font-bold text-white bg-red-800 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+                        Limpar dados
+                    </button>
                     <button type="button" @click="isOpen = false"
                         class="px-6 py-2 text-red-800 border border-red-600 rounded ml-2">
                         Cancelar
@@ -112,8 +120,8 @@
         </div>
 
         <!-- Task Cards -->
-        <div class="flex items-center justify-center py-5">
-            <div class="w-full max-w-fit">
+        <div class="flex items-center justify-center py-1">
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-2">
                 <div v-for="(task, task_view_idx) in paginatedTasks" :key="task.id"
                     class="max-w-lg overflow-hidden rounded shadow-lg mb-4">
                     <div class="px-8 py-4 bg-white">
@@ -145,29 +153,29 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="filterTasks.length === 0">
-                    <h3 class="text-lg font-bold">
-                        Não há tarefas cadastradas, você está livre como um
-                        pássaro!
-                    </h3>
-                </div>
-                <!-- Pagination Controls -->
-                <div class="flex justify-center mt-4">
-                    <button @click="prevPage" :disabled="currentPage === 1"
-                        class="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400">
-                        Anterior
-                    </button>
-                    <button v-for="page in totalPages" @click="goToPage(page)" :key="page"
-                        :class="{ 'bg-blue-600 text-white': currentPage === page, 'bg-gray-300': currentPage !== page }"
-                        class="px-4 py-2 mx-1 rounded hover:bg-gray-400">
-                        {{ page }}
-                    </button>
-                    <button @click="nextPage" :disabled="currentPage === totalPages"
-                        class="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400">
-                        Próxima
-                    </button>
-                </div>
             </div>
+            <div class="items-center justify-center" v-if="filterTasks.length === 0">
+                <h3 class="text-lg font-bold">
+                    Não há tarefas cadastradas, você está livre como um
+                    pássaro!
+                </h3>
+            </div>
+        </div>
+        <!-- Pagination Controls -->
+        <div class="flex justify-center" v-if="filterTasks.length >= 11">
+            <button @click="prevPage" :disabled="currentPage === 1"
+                class="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400">
+                Anterior
+            </button>
+            <button v-for="page in totalPages" @click="goToPage(page)" :key="page"
+                :class="{ 'bg-blue-600 text-white': currentPage === page, 'bg-gray-300': currentPage !== page }"
+                class="px-4 py-2 mx-1 rounded hover:bg-gray-400">
+                {{ page }}
+            </button>
+            <button @click="nextPage" :disabled="currentPage === totalPages"
+                class="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400">
+                Próxima
+            </button>
         </div>
 
 
@@ -233,6 +241,10 @@
                     <button type="submit"
                         class="px-6 py-2 font-bold text-white bg-blue-800 rounded hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Salvar
+                    </button>
+                    <button type="reset"
+                        class="px-6 py-2 font-bold text-white bg-red-800 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+                        Limpar dados
                     </button>
                     <button @click="isEditOpen = false" type="button"
                         class="px-6 py-2 text-red-800 border border-red-600 rounded ml-2">

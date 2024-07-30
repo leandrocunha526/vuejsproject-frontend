@@ -122,7 +122,7 @@ export default {
                             this.$router.push("/"); // Navigate to the login page
                         } else {
                             this.resetForm();  // Clear the form on error
-                            this.user.registerErrorMessages.push("Ocorreu um erro ao cadastrar o usuário.");
+                            this.user.registerErrorMessages.push("Ocorreu um erro ao cadastrar o usuário. Tente novamente com outro nome de usuário.");
                         }
                     }
                 })

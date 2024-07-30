@@ -247,7 +247,7 @@
                         Limpar dados
                     </button>
                     <button @click="isEditOpen = false" type="button"
-                        class="px-6 py-2 text-red-800 border border-red-600 rounded ml-2">
+                        class="px-6 py-2 text-black border border-gray-400 hover:bg-gray-300 rounded ml-2">
                         Cancelar
                     </button>
                 </form>

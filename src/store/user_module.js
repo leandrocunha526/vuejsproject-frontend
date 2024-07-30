@@ -152,12 +152,9 @@ const actions = {
             if (res.success) {
                 commit("setUserProfile", res.data);
                 return res;
-            } else {
-                commit("updateUserProfileFailure", res.message);
-                return res;
             }
         } catch (error) {
-            return { success: false, message: error.message };
+            return null;
         }
     },
     async deleteUser({ commit, state }) {

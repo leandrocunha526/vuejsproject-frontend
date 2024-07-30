@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white m-4 mx-auto">
+    <div class="max-w-max rounded overflow-hidden shadow-lg bg-white m-4 mx-auto">
         <div v-if="loading" class="flex items-center justify-center h-64">
             <svg class="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24">

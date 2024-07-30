@@ -150,7 +150,7 @@ const actions = {
         try {
             const res = await userService.updateUser(user.id, user);
             if (res.success) {
-                commit("setUserProfile", res.data);
+                commit("resetUserProfile", res.data);
                 return res;
             }
         } catch (error) {

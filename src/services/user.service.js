@@ -34,6 +34,9 @@ const login = async function (user) {
 const getUserProfile = async function () {
     return await api
         .get("/user/profile", {
+            headers: {
+                "Content-Type": "application/json",
+            },
             withCredentials: true,
         })
         .then((res) => {
@@ -75,16 +78,19 @@ const updateUser = async function (id, user) {
             withCredentials: true,
         })
         .then((res) => {
-            return res.data.user;
+            return res.data;
         })
         .catch((error) => {
-            return error.response.error;
+            return error.response.data;
         });
 };
 
 const deleteUser = async function (user_id) {
     return await api
         .delete("/user/delete/" + user_id, {
+            headers: {
+                "Content-Type": "application/json",
+            },
             withCredentials: true,
         })
         .then((res) => {
@@ -98,6 +104,9 @@ const deleteUser = async function (user_id) {
 const getTasks = async function () {
     return await api
         .get("/task/list", {
+            headers: {
+                "Content-Type": "application/json",
+            },
             withCredentials: true,
         })
         .then((res) => {
@@ -143,6 +152,9 @@ const updateTask = async function (id, task) {
 const deleteTask = async function (task_id) {
     return await api
         .delete("/task/delete/" + task_id, {
+            headers: {
+                "Content-Type": "application/json",
+            },
             withCredentials: true,
         })
         .then((res) => {

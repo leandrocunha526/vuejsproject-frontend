@@ -137,7 +137,7 @@
                                     task.status === 'Concluído',
                             }" class="px-2 py-1 rounded-xl">{{ task.status }}</span>
                         </p>
-                        <div class="space-x-2">
+                        <div class="grid space-x-0">
                             <button @click="showDeleteModal(task.id, task_view_idx)"
                                 class="mb-2 px-6 py-2 text-white bg-red-600 rounded shadow hover:bg-red-700">
                                 Excluir
@@ -147,7 +147,7 @@
                                 Editar
                             </button>
                             <router-link :to="`/task/${task.id}`"
-                                class="mb-2 px-6 py-2 text-white bg-blue-600 rounded shadow hover:bg-blue-700 no-underline">
+                                class="mb-2 px-6 py-2 text-white text-center bg-blue-600 rounded shadow hover:bg-blue-700 no-underline">
                                 Detalhes
                             </router-link>
                         </div>

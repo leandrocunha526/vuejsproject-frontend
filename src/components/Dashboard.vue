@@ -137,6 +137,17 @@
                                     task.status === 'Concluído',
                             }" class="px-2 py-1 rounded-xl">{{ task.status }}</span>
                         </p>
+                        <p v-if="task.status !== 'Concluído'" class="mb-2">
+                            <span
+                                class="inline-flex items-center px-4 py-1 rounded-lg shadow-lg bg-gradient-to-r from-green-400 to-blue-500 text-white">
+                                <svg class="-ml-1 mr-2 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 4h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2h1zm0 4h10m-7 4h4" />
+                                </svg>
+                                <span :class="'text-sm font-semibold'">{{ remainingDays(task.duedate) }}</span>
+                            </span>
+                        </p>
                         <div class="grid space-x-0">
                             <button @click="showDeleteModal(task.id, task_view_idx)"
                                 class="mb-2 px-6 py-2 text-white bg-red-600 rounded shadow hover:bg-red-700">
@@ -340,6 +351,31 @@ export default {
                 toast.error("Ocorreu um erro ao obter tarefas: " + error);
             } finally {
                 this.loading = false;
+            }
+        },
+        remainingDays(duedate) {
+            const dueDateObj = new Date(duedate);
+            const today = new Date();
+            const diffTime = dueDateObj - today;
+
+            const diffDays = Math.floor(Math.abs(diffTime) / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor((Math.abs(diffTime) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const diffMinutes = Math.floor((Math.abs(diffTime) % (1000 * 60 * 60)) / (1000 * 60));
+
+            const daysLabel = diffDays === 1 ? 'dia' : 'dias';
+            const hoursLabel = diffHours === 1 ? 'hora' : 'horas';
+            const minutesLabel = diffMinutes === 1 ? 'minuto' : 'minutos';
+
+            if (diffTime < 0) {
+                return `Atrasado por ${diffDays} ${daysLabel}, ${diffHours} ${hoursLabel} e ${diffMinutes} ${minutesLabel}.`;
+            } else if (diffDays > 0) {
+                return `Faltam ${diffDays} ${daysLabel}, ${diffHours} ${hoursLabel} e ${diffMinutes} ${minutesLabel} para a conclusão.`;
+            } else if (diffHours > 0) {
+                return `Faltam ${diffHours} ${hoursLabel} e ${diffMinutes} ${minutesLabel} para a conclusão.`;
+            } else if (diffMinutes > 0) {
+                return `Faltam ${diffMinutes} ${minutesLabel} para a conclusão.`;
+            } else {
+                return `Agora é o prazo de conclusão.`;
             }
         },
         async addTask(e) {

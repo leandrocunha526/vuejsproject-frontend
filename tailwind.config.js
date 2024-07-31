@@ -3,7 +3,11 @@
 module.exports = {
     content: ["./index.html", "./src/**/*.{vue,js,jsx}"],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                sans: "sans-serif",
+            },
+        },
     },
     plugins: [],
 };

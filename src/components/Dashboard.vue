@@ -56,6 +56,14 @@
             </div>
         </div>
 
+        <!--Filter by order of duedate-->
+        <label for="sortOrder" class="block mb-2 text-sm font-bold text-gray-700">Ordenar por data de vencimento</label>
+        <select v-model="sortOrder"
+            class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <option value="asc">Ascendente (mais antiga para a mais recente)</option>
+            <option value="desc">Descendente (mais recente para a mais antiga) - ordem padrão</option>
+        </select>
+
         <!-- Button to Open Modal -->
         <div class="mb-6 flex justify-center">
             <button @click="isOpen = true"
@@ -284,6 +292,7 @@ export default {
             isEditOpen: false,
             show: false,
             loading: false, // Add loading state
+            sortOrder: "desc", // Novo campo para armazenar a ordem de classificação
             task: {
                 title: "",
                 description: "",
@@ -313,7 +322,7 @@ export default {
             _tasks: "tasks",
         }),
         filterTasks() {
-            return this.tasks.filter(task => {
+            let filteredTasks = this.tasks.filter(task => {
                 const matchesSearch = task.title.toLowerCase().includes(this.search.toLowerCase()) ||
                     task.description.toLowerCase().includes(this.search.toLowerCase()) ||
                     task.createdAt.toLowerCase().includes(this.search.toLowerCase()) ||
@@ -323,6 +332,17 @@ export default {
 
                 return matchesSearch && matchesStatus;
             });
+
+            // Ordenar as tarefas com base na data de vencimento
+            filteredTasks.sort((a, b) => {
+                if (this.sortOrder === 'asc') {
+                    return new Date(a.duedate) - new Date(b.duedate);
+                } else {
+                    return new Date(b.duedate) - new Date(a.duedate);
+                }
+            });
+
+            return filteredTasks;
         },
         paginatedTasks() {
             const start = (this.currentPage - 1) * this.tasksPerPage;

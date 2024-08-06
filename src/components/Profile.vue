@@ -16,15 +16,24 @@
             <p class="text-gray-700 text-base">Criado em: {{ formatDate(userProfile.createdAt) }}</p>
             <p class="text-gray-700 text-base">Atualizado em: {{ formatDate(userProfile.updatedAt) }}</p>
         </div>
-        <div class="px-6 pt-4 pb-2">
-            <button @click="showEditModal = true"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Editar perfil
-            </button>
-            <button @click="showDeleteModal = true"
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
-                Excluir conta
-            </button>
+        <!-- Privacy Information -->
+        <div class="mt-3 p-2 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded text-center">
+            <i class="fas animate-pulse fa-key mr-2"></i>
+            <strong>Aviso de privacidade</strong>
+            <p>Todos os registros só podem ser acessados por você.</p>
+            <p>Isso inclui seus dados e suas tarefas.</p>
+        </div>
+        <div class="flex items-center justify-center h-full">
+            <div class="px-8 pt-6 pb-2 mx-auto max-w-md">
+                <button @click="showEditModal = true"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Editar perfil
+                </button>
+                <button @click="showDeleteModal = true"
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
+                    Excluir conta
+                </button>
+            </div>
         </div>
         <div v-if="showEditModal" class="fixed z-10 inset-0 overflow-y-auto">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">

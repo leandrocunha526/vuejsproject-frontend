@@ -16,17 +16,17 @@
                     Seja bem-vindo ao seu dashboard {{ userProfile.username }}!
                 </p>
                 <div class="flex space-x-2 mb-2">
-                    <p class="text-base">
-                        O que deseja fazer hoje?
-                    </p>
+                    <p class="text-base">O que deseja fazer hoje?</p>
                     <p class="text-base" v-if="filterTasks.length === 1">
                         Você possui {{ filterTasks.length }} tarefa cadastrada!
                     </p>
                     <p class="text-base" v-else-if="filterTasks.length > 1">
-                        Você possui {{ filterTasks.length }} tarefas cadastradas!
+                        Você possui {{ filterTasks.length }} tarefas
+                        cadastradas!
                     </p>
                     <p class="text-base" v-else>
-                        Você não possui tarefas cadastradas! Que tal começar agora?
+                        Você não possui tarefas cadastradas! Que tal começar
+                        agora?
                     </p>
                 </div>
             </div>
@@ -46,9 +46,12 @@
             <!-- Search Input -->
             <label for="search" class="block mb-2 text-sm font-bold text-gray-700">Pesquisar por título e
                 descrição</label>
-            <input type="search" v-model="search"
-                placeholder="Pesquisar por título e descrição ou selecione uma data abaixo"
-                class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+            <div class="relative">
+                <input type="search" v-model="search"
+                    placeholder="Pesquisar por título e descrição ou selecione uma data abaixo"
+                    class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none pl-10 focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+            </div>
             <label for="date" class="block mb-2 text-sm font-bold text-gray-700">Pesquisar por data</label>
             <div class="mb-4 justify-center flex">
                 <input type="date" v-model="search" placeholder="Pesquisar por título e descrição"
@@ -60,15 +63,19 @@
         <label for="sortOrder" class="block mb-2 text-sm font-bold text-gray-700">Ordenar por data de vencimento</label>
         <select v-model="sortOrder"
             class="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-300 rounded appearance-none focus:bg-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
-            <option value="asc">Ascendente (mais antiga para a mais recente)</option>
-            <option value="desc">Descendente (mais recente para a mais antiga) - ordem padrão</option>
+            <option value="asc">
+                Ascendente (mais antiga para a mais recente)
+            </option>
+            <option value="desc">
+                Descendente (mais recente para a mais antiga) - ordem padrão
+            </option>
         </select>
 
         <!-- Button to Open Modal -->
         <div class="mb-6 flex justify-center">
             <button @click="isOpen = true"
                 class="px-6 py-2 text-white bg-blue-600 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-black">
-                Cadastrar tarefa
+                <i class="fa-solid fa-plus animate-bounce mr-2"></i>Cadastrar tarefa
             </button>
         </div>
 
@@ -135,7 +142,6 @@
                     <div class="px-8 py-4 bg-white">
                         <h1 class="mb-2 text-xl font-bold">{{ task.title }}</h1>
                         <p class="text-base mb-3">
-                            Estado:
                             <span :class="{
                                 'bg-red-200 text-red-800':
                                     task.status === 'Pendente',
@@ -143,8 +149,19 @@
                                     task.status === 'Em andamento',
                                 'bg-green-200 text-green-800':
                                     task.status === 'Concluído',
-                            }" class="px-2 py-1 rounded-xl">{{ task.status }}</span>
+                            }" class="px-2 py-1 rounded-xl flex items-center">
+                                <i :class="{
+                                    'fas fa-hourglass-start animate-spin mr-2':
+                                        task.status === 'Pendente',
+                                    'fas fa-spinner fa-spin mr-2':
+                                        task.status === 'Em andamento',
+                                    'fas fa-check-circle animate-bounce mr-2':
+                                        task.status === 'Concluído',
+                                }" class="mr-2"></i>
+                                {{ task.status }}
+                            </span>
                         </p>
+
                         <p v-if="task.status !== 'Concluído'" class="mb-2">
                             <span
                                 class="inline-flex items-center px-4 py-1 rounded-lg shadow-lg bg-gradient-to-r from-green-400 to-blue-500 text-white">
@@ -153,7 +170,9 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 7V3m8 4V3m-9 4h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2h1zm0 4h10m-7 4h4" />
                                 </svg>
-                                <span :class="'text-sm font-semibold'">{{ remainingDays(task.duedate) }}</span>
+                                <span :class="'text-sm font-semibold'">{{
+                                    remainingDays(task.duedate)
+                                }}</span>
                             </span>
                         </p>
                         <div class="grid space-x-0">
@@ -174,10 +193,10 @@
                 </div>
             </div>
             <div class="items-center justify-center" v-if="filterTasks.length === 0">
-                <h3 class="text-lg font-bold">
-                    Não há tarefas cadastradas, você está livre como um
-                    pássaro!
-                </h3>
+                <span class="text-lg font-bold flex items-center">
+                    <i class="fa-solid fa-kiwi-bird animate-pulse mr-2"></i>
+                    Não há tarefas cadastradas, você está livre como um pássaro!
+                </span>
             </div>
         </div>
         <!-- Pagination Controls -->
@@ -186,9 +205,10 @@
                 class="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400">
                 Anterior
             </button>
-            <button v-for="page in totalPages" @click="goToPage(page)" :key="page"
-                :class="{ 'bg-blue-600 text-white': currentPage === page, 'bg-gray-300': currentPage !== page }"
-                class="px-4 py-2 mx-1 rounded hover:bg-gray-400">
+            <button v-for="page in totalPages" @click="goToPage(page)" :key="page" :class="{
+                'bg-blue-600 text-white': currentPage === page,
+                'bg-gray-300': currentPage !== page,
+            }" class="px-4 py-2 mx-1 rounded hover:bg-gray-400">
                 {{ page }}
             </button>
             <button @click="nextPage" :disabled="currentPage === totalPages"
@@ -196,7 +216,6 @@
                 Próxima
             </button>
         </div>
-
 
         <!-- Delete Confirmation Modal -->
         <div v-if="showDeleteConfirmModal"
@@ -322,20 +341,31 @@ export default {
             _tasks: "tasks",
         }),
         filterTasks() {
-            let filteredTasks = this.tasks.filter(task => {
-                const matchesSearch = task.title.toLowerCase().includes(this.search.toLowerCase()) ||
-                    task.description.toLowerCase().includes(this.search.toLowerCase()) ||
-                    task.createdAt.toLowerCase().includes(this.search.toLowerCase()) ||
-                    task.duedate.toLowerCase().includes(this.search.toLowerCase());
+            let filteredTasks = this.tasks.filter((task) => {
+                const matchesSearch =
+                    task.title
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase()) ||
+                    task.description
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase()) ||
+                    task.createdAt
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase()) ||
+                    task.duedate
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase());
 
-                const matchesStatus = this.filterStatus === "" || task.status === this.filterStatus;
+                const matchesStatus =
+                    this.filterStatus === "" ||
+                    task.status === this.filterStatus;
 
                 return matchesSearch && matchesStatus;
             });
 
             // Ordenar as tarefas com base na data de vencimento
             filteredTasks.sort((a, b) => {
-                if (this.sortOrder === 'asc') {
+                if (this.sortOrder === "asc") {
                     return new Date(a.duedate) - new Date(b.duedate);
                 } else {
                     return new Date(b.duedate) - new Date(a.duedate);
@@ -365,7 +395,7 @@ export default {
             try {
                 this.tasks = await this.getTasks();
                 this.userProfile = JSON.parse(
-                    localStorage.getItem("userProfile")
+                    localStorage.getItem("userProfile"),
                 );
             } catch (error) {
                 toast.error("Ocorreu um erro ao obter tarefas: " + error);
@@ -378,13 +408,19 @@ export default {
             const today = new Date();
             const diffTime = dueDateObj - today;
 
-            const diffDays = Math.floor(Math.abs(diffTime) / (1000 * 60 * 60 * 24));
-            const diffHours = Math.floor((Math.abs(diffTime) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const diffMinutes = Math.floor((Math.abs(diffTime) % (1000 * 60 * 60)) / (1000 * 60));
+            const diffDays = Math.floor(
+                Math.abs(diffTime) / (1000 * 60 * 60 * 24),
+            );
+            const diffHours = Math.floor(
+                (Math.abs(diffTime) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+            );
+            const diffMinutes = Math.floor(
+                (Math.abs(diffTime) % (1000 * 60 * 60)) / (1000 * 60),
+            );
 
-            const daysLabel = diffDays === 1 ? 'dia' : 'dias';
-            const hoursLabel = diffHours === 1 ? 'hora' : 'horas';
-            const minutesLabel = diffMinutes === 1 ? 'minuto' : 'minutos';
+            const daysLabel = diffDays === 1 ? "dia" : "dias";
+            const hoursLabel = diffHours === 1 ? "hora" : "horas";
+            const minutesLabel = diffMinutes === 1 ? "minuto" : "minutos";
 
             if (diffTime < 0) {
                 return `Atrasado por ${diffDays} ${daysLabel}, ${diffHours} ${hoursLabel} e ${diffMinutes} ${minutesLabel}.`;
@@ -495,6 +531,10 @@ export default {
 </script>
 
 <style scoped>
+.container {
+    padding: 20px;
+}
+
 /* Add styles for the loading spinner */
 .spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);

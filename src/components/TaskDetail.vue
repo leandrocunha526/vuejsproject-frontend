@@ -9,22 +9,54 @@
             <p class="text-lg text-gray-600 mt-4">Carregando...</p>
         </div>
         <div v-else class="bg-white shadow rounded-lg p-6">
-            <h1 class="text-2xl font-extrabold mb-4 text-gray-900">Detalhes da Tarefa de código {{ taskDetail.id }}</h1>
-            <h2 class="text-3xl font-semibold mb-4 text-gray-800">{{ taskDetail.title }}</h2>
-            <p class="text-lg text-gray-700 mb-4">{{ taskDetail.description }}</p>
-            <p class="text-sm text-gray-500 mb-2">Estado:
-                <span :class="{
-                    'bg-red-200 text-red-800': taskDetail.status === 'Pendente',
-                    'bg-yellow-200 text-yellow-800': taskDetail.status === 'Em andamento',
-                    'bg-green-200 text-green-800': taskDetail.status === 'Concluído',
-                }" class="px-2 py-1 rounded-xl">{{ taskDetail.status }}</span>
+            <h1 class="text-2xl font-extrabold mb-4 text-gray-900">
+                Detalhes da Tarefa de código {{ taskDetail.id }}
+            </h1>
+            <h2 class="text-3xl font-semibold mb-4 text-gray-800">
+                {{ taskDetail.title }}
+            </h2>
+            <p class="text-lg text-gray-700 mb-4">
+                {{ taskDetail.description }}
             </p>
-            <p class="text-sm text-gray-500 mb-2">Prazo até: <span class="font-medium text-gray-700">{{
-                formatDate(taskDetail.duedate) }}</span></p>
-            <p class="text-sm text-gray-500 mb-2">Criado em: <span class="font-medium text-gray-700">{{
-                formatDate(taskDetail.createdAt) }}</span></p>
-            <p class="text-sm text-gray-500 mb-4">Atualizado em: <span class="font-medium text-gray-700">{{
-                formatDate(taskDetail.updatedAt) }}</span></p>
+            <p class="text-sm text-gray-500 mb-2">
+                Estado:
+                <span :class="{
+                    'bg-red-200 text-red-800':
+                        taskDetail.status === 'Pendente',
+                    'bg-yellow-200 text-yellow-800':
+                        taskDetail.status === 'Em andamento',
+                    'bg-green-200 text-green-800':
+                        taskDetail.status === 'Concluído',
+                }" class="inline-flex items-center px-2 py-1 rounded-xl">
+                    <i :class="{
+                        'fas fa-hourglass-start animate-spin mr-2':
+                            taskDetail.status === 'Pendente',
+                        'fas fa-spinner fa-spin mr-2':
+                            taskDetail.status === 'Em andamento',
+                        'fas fa-check-circle animate-bounce mr-2':
+                            taskDetail.status === 'Concluído',
+                    }"></i>
+                    {{ taskDetail.status }}
+                </span>
+            </p>
+            <p class="text-sm text-gray-500 mb-2">
+                Prazo até:
+                <span class="font-medium text-gray-700">{{
+                    formatDate(taskDetail.duedate)
+                }}</span>
+            </p>
+            <p class="text-sm text-gray-500 mb-2">
+                Criado em:
+                <span class="font-medium text-gray-700">{{
+                    formatDate(taskDetail.createdAt)
+                }}</span>
+            </p>
+            <p class="text-sm text-gray-500 mb-4">
+                Atualizado em:
+                <span class="font-medium text-gray-700">{{
+                    formatDate(taskDetail.updatedAt)
+                }}</span>
+            </p>
             <button @click="goBack"
                 class="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                 Voltar
@@ -34,24 +66,24 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-    name: 'TaskDetail',
+    name: "TaskDetail",
     data() {
         return {
             loading: true,
-            task: {}
+            task: {},
         };
     },
     computed: {
         ...mapGetters("user", {
-            taskDetail: "taskDetail"
+            taskDetail: "taskDetail",
         }),
     },
     methods: {
         ...mapActions("user", {
-            getTaskById: "getTaskById"
+            getTaskById: "getTaskById",
         }),
         formatDate(dateString) {
             const date = new Date(dateString);
@@ -67,14 +99,14 @@ export default {
                 await this.getTaskById(taskId);
                 console.log("Task detail:", this.taskDetail);
             } catch (error) {
-                console.error('Error fetching task:', error);
+                console.error("Error fetching task:", error);
             } finally {
                 this.loading = false;
             }
         },
         goBack() {
             this.$router.go(-1);
-        }
+        },
     },
     created() {
         this.loadTask();

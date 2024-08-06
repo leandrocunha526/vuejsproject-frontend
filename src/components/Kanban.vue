@@ -2,11 +2,7 @@
     <div class="flex overflow-x-auto p-4 space-x-4">
         <!-- Indicador de carregamento -->
         <div v-if="loading" class="flex items-center justify-center w-full">
-            <svg class="animate-spin h-12 w-12 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 12a8 8 0 018-8V0a12 12 0 00-12 12h4zm0 0a8 8 0 008 8v-4a12 12 0 01-12-12h4zM12 4a8 8 0 00-8 8H0a12 12 0 0112-12v4zM12 4a8 8 0 018 8h4a12 12 0 00-12-12v4z" />
-            </svg>
+            <i class="fas fa-spinner fa-spin h-12 w-12 text-blue-500"></i>
         </div>
 
         <!-- Kanban Columns -->
@@ -16,7 +12,10 @@
                 'bg-yellow-100 border-yellow-300': status === 'Em andamento',
                 'bg-green-100 border-green-300': status === 'Concluído',
             }" class="w-full min-w-[250px] border rounded-lg p-4 flex flex-col space-y-4">
-                <h2 class="text-lg font-semibold mb-4">{{ status }}</h2>
+                <h2 class="text-lg font-semibold mb-4 flex items-center">
+                    <i :class="getStatusIcon(status) + ' mr-2'"></i>
+                    {{ status }}
+                </h2>
                 <div class="flex flex-col space-y-4">
                     <div v-for="task in filteredTasks(status)" :key="task.id"
                         class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm cursor-pointer"
@@ -69,6 +68,18 @@ export default {
         },
         goToTaskDetail(taskId) {
             this.$router.push({ name: 'TaskDetailView', params: { id: taskId } });
+        },
+        getStatusIcon(status) {
+            switch (status) {
+                case 'Pendente':
+                    return 'fas fa-hourglass-half animate-spin';
+                case 'Em andamento':
+                    return 'fas fa-spinner fa-spin';
+                case 'Concluído':
+                    return 'fas fa-check-circle animate-bounce';
+                default:
+                    return 'fas fa-question-circle';
+            }
         },
     },
     async mounted() {
